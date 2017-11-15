@@ -9,27 +9,28 @@ FORM = """
     <html>
         <head>
             <style>
-                form {
+                form {{
                     background-color: #eee;
                     padding: 20px;
                     margin: 0 auto;
                     width: 540px;
                     font: 16px sans-serif;
                     border-radius: 10px;
-                }
-                textarea {
+                }}
+                textarea {{
                     margin: 10px 0;
                     width: 540px;
                     height: 120px;
-                }
+                }}
             </style>
         </head>
         <body>
             <!-- code drop here -->
-            <form action="/encrypted-message" method="POST">
+            <form action="/" method="POST">
                 <label for="rot">Rotations</label>
+                <br>
                 <input name="rot" type="text" value="0"></input>
-                <textarea name="text" type="text"></textarea>
+                <textarea name="text" type="text">{0}</textarea>
                 <button type="submit">Encode</button>
             </form>
         </body>
@@ -38,15 +39,15 @@ FORM = """
 
 @app.route("/")
 def index():
-    return FORM
+    return FORM.format("")
 
-@app.route("/encrypted-message", methods=["POST"])
+@app.route("/", methods=["POST"])
 def encodedMessage():
     rot = request.form['rot']
     text = request.form['text']
 
     encoded_message = encrypt(text, rot)
 
-    return encoded_message
+    return FORM.format(encoded_message)
 
 app.run()
